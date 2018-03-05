@@ -67,6 +67,10 @@ function initGrid(int8[3][3] grid) public
         return gameover;
     }
 
+    function getWinner() constant returns (address) {
+        return winner;
+    }
+
 
     function checkGrid() {
       for(uint8 b = 0; b < 3; b++){
@@ -84,14 +88,14 @@ function initGrid(int8[3][3] grid) public
             if (((grid[0][0] == grid[0][1]) && (grid[0][1] == grid[0][2] && (grid[0][2]!=0)) || (grid[0][0] == grid[1][0]) && (grid[1][0] == grid[2][0]&& (grid[2][0]!=0)) ||
             (grid[0][0] == grid[1][1]) && (grid[1][1] == grid[2][2])&& (grid[2][2]!=0)) ||
             ( ((grid[2][2] == grid[1][2]) && (grid[1][2] == grid[0][2])&& (grid[2][2]!=0)) || ((grid[2][2] == grid[1][1]) && (grid[1][1] == grid[2][0])&& (grid[2][0]!=0)) ||
-            ((grid[2][2] == grid[2][1]) && (grid[2][1] == grid[2][0])&& (grid[2][0]!=0)))){
+            ((grid[2][2] == grid[2][1]) && (grid[2][1] == grid[2][0])&& (grid[2][0]!=0))) || ((grid[1][0] == grid[1][1]) && (grid[1][1] == grid[1][2])&& (grid[1][0]!=0))) {
                 winner = msg.sender;
                 gameover = true;
                 return;
-
             }
             return;
         }
+
     function setUsers() public {
         if (setfirstUser==true) {
             secondUser = msg.sender;
@@ -101,7 +105,6 @@ function initGrid(int8[3][3] grid) public
             setfirstUser = true;
         }
     }
-
-}
+ q
 
 

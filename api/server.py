@@ -47,10 +47,19 @@ def get_over():
 	contract_address = req_json["address"]
 	contract_instance = w3.eth.contract(contract_interface['abi'], contract_address, ContractFactoryClass=ConciseContract)
 	tx_hash = contract_instance.getOver()
-	receipt = w3.eth.getTransactionReceipt(tx_hash)
+	#receipt = w3.eth.getTransactionReceipt(tx_hash)
 	return jsonify(tx_hash)
 
+@app.route('/getwinner', methods=['POST'])
+def get_winner():
+	print(request.data)
+	req_json = json.loads(request.data.decode('utf8'))
+	contract_address = req_json["address"]
+	contract_instance = w3.eth.contract(contract_interface['abi'], contract_address, ContractFactoryClass=ConciseContract)
+	tx_hash = contract_instance.getWinner()
+	#receipt = w3.eth.getTransactionReceipt(tx_hash)
 
+	return jsonify(tx_hash)
 
 
 @app.route('/curraddress', methods=['GET'])

@@ -26,6 +26,13 @@ def start(bot, update):
 
 
 
+def send_msg_over(bot, update, text):
+
+    bot.sendMessage(text=" game over: {} ".format(text),
+                          chat_id=opossiters[update.callback_query.message.chat_id])
+
+
+
 def button(bot, update):
 
     #update.message.reply_text('Please choose:', reply_markup=reply_markup)
@@ -34,8 +41,37 @@ def button(bot, update):
     print(query.data[0], query.data[1])
     #curr_state[int(query.data[0])][int(query.data[1])] = 1
     print(query.message.chat_id)
+
+
+
+
+
     response = requests.post("http://0.0.0.0:5000/step",data=json.dumps({"address":user_room[query.message.chat_id],"uid":user_uid[query.message.chat_id],"x":query.data[0],
                                                    "y":query.data[1]}))
+
+    resp = requests.post("http://0.0.0.0:5000/gameover",data=json.dumps({"address":user_room[query.message.chat_id]}))
+    print(resp.text)
+
+    if json.loads(resp.text):
+        resp1 = requests.post("http://0.0.0.0:5000/getwinner",
+                                 data=json.dumps({"address": user_room[query.message.chat_id]}))
+        print(json.loads(resp1.text))
+        winner_id = json.loads(resp1.text)
+        if winner_id == None:
+            send_msg_over(bot, update, "draw")
+            bot.edit_message_text(text="game over: draw ", chat_id=query.message.chat_id,
+                                  message_id=query.message.message_id)
+        elif winner_id ==user_uid[query.message.chat_id]:
+            send_msg_over(bot, update, "lose")
+            bot.edit_message_text(text="game over: you are win ", chat_id=query.message.chat_id,
+                                  message_id=query.message.message_id)
+        else:
+            send_msg_over(bot, update, "win")
+
+            bot.edit_message_text(text="game over: you are lose ", chat_id=query.message.chat_id,
+                                  message_id=query.message.message_id)
+        return
+
     print(response)
     print(json.loads(response.text))
     curr_state = json.loads(response.text)
