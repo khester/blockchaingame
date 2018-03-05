@@ -9,30 +9,37 @@ contract Tictactoe {
     bool setfirstUser;
     bool setsecondUser;
     address winner;
-
+    bool gameover;
     function getGrid() constant returns (int8[3][3]) {
         return grid;
     }
 
-function initGrid(int8[3][3] grid) public 
+function initGrid(int8[3][3] grid) public
     {
       if(gridInit) // lockout
           return;
       for(uint8 b = 0; b < 3; b++){
       for(uint8 u = 0; u < 3; u++){
-      
+
           grid[b][u] = 0;
-      }   
+      }
       }
       gridInit = true;
     }
-    
+
     function setStep(uint8 x, uint8 y) public {
+        if (gameover) {
+            return;
+        }
+        setUsers();
+
         if (last_user != msg.sender) {
             last_user = msg.sender;
             if (msg.sender == firstUser) {
                 if (grid[x][y] == 0) {
                 grid[x][y] = 1;
+                checkGrid();
+                checkGridforWin();
                 } else {
                 return;
                 }
@@ -40,6 +47,8 @@ function initGrid(int8[3][3] grid) public
             } else {
                 if (grid[x][y] == 0) {
                 grid[x][y] = 2;
+                checkGrid();
+                checkGridforWin();
                 } else {
                 return;
                 }
@@ -54,24 +63,34 @@ function initGrid(int8[3][3] grid) public
         return grid;
     }
 
-    function checkGrid() constant returns (bool){
+    function getOver() constant returns (bool) {
+        return gameover;
+    }
+
+
+    function checkGrid() {
       for(uint8 b = 0; b < 3; b++){
                 for(uint8 a = 0; a < 3; a++){
                     if (grid[b][a]==0) {
-                        return true;
+                        return;
                     }
             }
       }
-      return false;
+      gameover = true;
+      return;
     }
-    
-        function checkGridforWin() constant returns (bool){
+
+        function checkGridforWin() {
             if (((grid[0][0] == grid[0][1]) && (grid[0][1] == grid[0][2] && (grid[0][2]!=0)) || (grid[0][0] == grid[1][0]) && (grid[1][0] == grid[2][0]&& (grid[2][0]!=0)) ||
             (grid[0][0] == grid[1][1]) && (grid[1][1] == grid[2][2])&& (grid[2][2]!=0)) ||
             ( ((grid[2][2] == grid[1][2]) && (grid[1][2] == grid[0][2])&& (grid[2][2]!=0)) || ((grid[2][2] == grid[1][1]) && (grid[1][1] == grid[2][0])&& (grid[2][0]!=0)) ||
             ((grid[2][2] == grid[2][1]) && (grid[2][1] == grid[2][0])&& (grid[2][0]!=0)))){
-                return true;
+                winner = msg.sender;
+                gameover = true;
+                return;
+
             }
+            return;
         }
     function setUsers() public {
         if (setfirstUser==true) {
@@ -84,4 +103,5 @@ function initGrid(int8[3][3] grid) public
     }
 
 }
+
 

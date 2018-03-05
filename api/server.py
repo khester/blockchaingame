@@ -20,14 +20,14 @@ with open('Tictactoe.sol', 'rb') as f:
 contract_interface = compiled_sol['<stdin>:Tictactoe']
 
 # web3.py instance
-w3 = Web3(HTTPProvider("http://ganache:8545"))
+w3 = Web3(HTTPProvider("http://0.0.0.0:8545"))
 
 print("hello")
 # Instantiate and deploy contract
 
 
 # Getters + Setters for web3.eth.contract object
-print('Contract value: {}'.format(contract_instance.getGrid()))
+#print('Contract value: {}'.format(contract_instance.getGrid()))
 #contract_instance.setGreeting('Nihao', transact={'from': w3.eth.accounts[0]})
 #print('Setting value to: Nihao')
 #print('Contract value: {}'.format(contract_instance.grid()))
@@ -35,13 +35,34 @@ print('Contract value: {}'.format(contract_instance.getGrid()))
 app = Flask(__name__)
 
 
-@app.route('/curraddress')
+mapping_uid_to_room = dict()
+mapping_tg_to_uid = dict()
+
+
+
+@app.route('/gameover', methods=['POST'])
+def get_over():
+	print(request.data)
+	req_json = json.loads(request.data.decode('utf8'))
+	contract_address = req_json["address"]
+	contract_instance = w3.eth.contract(contract_interface['abi'], contract_address, ContractFactoryClass=ConciseContract)
+	tx_hash = contract_instance.getOver()
+	receipt = w3.eth.getTransactionReceipt(tx_hash)
+	return jsonify(tx_hash)
+
+
+
+
+@app.route('/curraddress', methods=['GET'])
 def return_current_adress():
-	return web3.eth.accounts
+	print("im here")
+	print(w3.eth.accounts[0])
+	return jsonify({"accounts_list":w3.eth.accounts})
 
 
-@app.route('/curraddress')
+@app.route('/init')
 def initgame():
+
 	contract = w3.eth.contract(abi=contract_interface['abi'], bytecode=contract_interface['bin'])
 	# Get transaction hash from deployed contract
 	tx_hash = contract.deploy(transaction={'from': w3.eth.accounts[0], 'gas': 4500000})
@@ -52,26 +73,27 @@ def initgame():
 	# Contract instance in concise mode
 	contract_instance = w3.eth.contract(contract_interface['abi'], contract_address, ContractFactoryClass=ConciseContract)
 	tx_hash = contract_instance.getGrid()
+	print("tx_hash", tx_hash)
 	receipt = w3.eth.getTransactionReceipt(tx_hash)
+	print("receipt", receipt)
 	contract_address = tx_receipt['contractAddress']
-	return contract_address
+
+	return jsonify(contract_address)
 
 @app.route('/step', methods=['POST'])
 def step():
-	req_json = request.json()
-	contract_address = req_json["adress"]
+	print(request.data)
+	req_json = json.loads(request.data.decode('utf8'))
+
+	contract_address = req_json["address"]
 	uid = req_json["uid"]
-	x = req_json["x"]
-	y = req_json["y"]
+	x = int(req_json["x"])
+	y = int(req_json["y"])
 	contract_instance = w3.eth.contract(contract_interface['abi'], contract_address, ContractFactoryClass=ConciseContract)
 	tx_hash = contract_instance.setStep(x,y, transact={'from': uid})
 	receipt = w3.eth.getTransactionReceipt(tx_hash)
-	contract_address = tx_receipt['contractAddress']
-
-	contract_instance = w3.eth.contract(contract_interface['abi'], contract_address, ContractFactoryClass=ConciseContract)
-	tx_hash = contract_instance.setStep(x,y, transact={'from': uid})
-
-	return 
+	tx_hash = contract_instance.getGrid()
+	return jsonify(tx_hash)
 
 @app.route('/')
 def index():
