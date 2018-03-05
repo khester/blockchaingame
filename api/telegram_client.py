@@ -27,6 +27,18 @@ def start(bot, update):
 
 
 def button(bot, update):
+
+    #update.message.reply_text('Please choose:', reply_markup=reply_markup)
+
+    query = update.callback_query
+    print(query.data[0], query.data[1])
+    #curr_state[int(query.data[0])][int(query.data[1])] = 1
+    print(query.message.chat_id)
+    response = requests.post("http://0.0.0.0:5000/step",data=json.dumps({"address":user_room[query.message.chat_id],"uid":user_uid[query.message.chat_id],"x":query.data[0],
+                                                   "y":query.data[1]}))
+    print(response)
+    print(json.loads(response.text))
+    curr_state = json.loads(response.text)
     keyboard = [[InlineKeyboardButton("{}".format(curr_state[0][0]), callback_data='00'),
                  InlineKeyboardButton("{}".format(curr_state[0][1]), callback_data='01'),
                  InlineKeyboardButton("{}".format(curr_state[0][2]), callback_data='02')],
@@ -41,12 +53,6 @@ def button(bot, update):
                 ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
-    #update.message.reply_text('Please choose:', reply_markup=reply_markup)
-
-    query = update.callback_query
-    print(query.data[0], query.data[1])
-    curr_state[int(query.data[0])][int(query.data[1])] = 1
-    print(query.message.chat_id)
     send_msg(bot, update, reply_markup)
     bot.edit_message_text(text="game_grid",reply_markup=reply_markup,
                           chat_id=query.message.chat_id,
