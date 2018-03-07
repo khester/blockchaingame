@@ -13,6 +13,6 @@ RUN pip3 install py-solc
 RUN pip3 install eth-testrpc
 RUN pip3 install flask
 RUN ls -l
-EXPOSE 1234
+EXPOSE 5000
 
 CMD python3 server.py 

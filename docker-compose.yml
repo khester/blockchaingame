@@ -3,11 +3,12 @@ services:
   server:
     build: './api'
     ports:
-      - 1234:1234
-      
+      - 5000:5000
+  telegram_bot:
+    build: './client'
+    ports:
+      - 12341:12341
   ganache:
     image: trufflesuite/ganache-cli:latest
-      
     ports:
       - 8545:8545
-
