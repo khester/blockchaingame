@@ -105,6 +105,6 @@ function initGrid(int8[3][3] grid) public
             setfirstUser = true;
         }
     }
- q
+ }
 
 
