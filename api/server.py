@@ -20,7 +20,7 @@ with open('Tictactoe.sol', 'rb') as f:
 contract_interface = compiled_sol['<stdin>:Tictactoe']
 
 # web3.py instance
-w3 = Web3(HTTPProvider("http://0.0.0.0:8545"))
+w3 = Web3(HTTPProvider("http://ganache:8545"))
 
 print("hello")
 # Instantiate and deploy contract

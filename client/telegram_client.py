@@ -46,14 +46,14 @@ def button(bot, update):
 
 
 
-    response = requests.post("http://0.0.0.0:5000/step",data=json.dumps({"address":user_room[query.message.chat_id],"uid":user_uid[query.message.chat_id],"x":query.data[0],
+    response = requests.post("http://server:5000/step",data=json.dumps({"address":user_room[query.message.chat_id],"uid":user_uid[query.message.chat_id],"x":query.data[0],
                                                    "y":query.data[1]}))
 
-    resp = requests.post("http://0.0.0.0:5000/gameover",data=json.dumps({"address":user_room[query.message.chat_id]}))
+    resp = requests.post("http://server:5000/gameover",data=json.dumps({"address":user_room[query.message.chat_id]}))
     print(resp.text)
 
     if json.loads(resp.text):
-        resp1 = requests.post("http://0.0.0.0:5000/getwinner",
+        resp1 = requests.post("http://server:5000/getwinner",
                                  data=json.dumps({"address": user_room[query.message.chat_id]}))
         print(json.loads(resp1.text))
         winner_id = json.loads(resp1.text)
@@ -116,11 +116,11 @@ def set_user_to_uid(tgid,uid):
 
 
 def init_game(bot, update):
-    game_token = json.loads(requests.get("http://0.0.0.0:5000/init").text)
+    game_token = json.loads(requests.get("http://server:5000/init").text)
     tguid = update.message.chat_id
     set_user_to_game(tguid,game_token)
     find_room(tguid,game_token)
-    get_user = json.loads(requests.get("http://0.0.0.0:5000/curraddress").text)["accounts_list"]
+    get_user = json.loads(requests.get("http://server:5000/curraddress").text)["accounts_list"]
     set_user_to_uid(tguid, get_user[0])
     update.message.reply_text("your game token: {} ".format(game_token))
 
@@ -147,7 +147,7 @@ def join(bot, update):
     opponent = user_room[token]
     tguid = update.message.chat_id
     set_user_to_game(tguid,token)
-    get_user = json.loads(requests.get("http://0.0.0.0:5000/curraddress").text)["accounts_list"]
+    get_user = json.loads(requests.get("http://server:5000/curraddress").text)["accounts_list"]
     set_user_to_uid(tguid, get_user[1])
     opossiters[tguid] = opponent
     opossiters[opponent] = tguid

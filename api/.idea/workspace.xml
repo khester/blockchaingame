@@ -14,8 +14,8 @@
       <file leaf-file-name="server.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-354">
-              <caret line="42" column="21" lean-forward="false" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="21" />
+            <state relative-caret-position="72">
+              <caret line="60" column="0" lean-forward="false" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
               <folding>
                 <element signature="e#43#54#0" expanded="true" />
               </folding>
@@ -26,7 +26,7 @@
       <file leaf-file-name="Tictactoe.sol" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Tictactoe.sol">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="894">
+            <state relative-caret-position="1926">
               <caret line="107" column="2" lean-forward="false" selection-start-line="107" selection-start-column="2" selection-end-line="107" selection-end-column="2" />
               <folding />
             </state>
@@ -51,8 +51,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/server.py" />
         <option value="$PROJECT_DIR$/telegram_client.py" />
+        <option value="$PROJECT_DIR$/server.py" />
         <option value="$PROJECT_DIR$/Tictactoe.sol" />
       </list>
     </option>
@@ -164,8 +164,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-354">
-          <caret line="42" column="21" lean-forward="false" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="21" />
+        <state relative-caret-position="72">
+          <caret line="60" column="0" lean-forward="false" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
           <folding>
             <element signature="e#43#54#0" expanded="true" />
           </folding>
@@ -174,7 +174,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Tictactoe.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="894">
+        <state relative-caret-position="1926">
           <caret line="107" column="2" lean-forward="false" selection-start-line="107" selection-start-column="2" selection-end-line="107" selection-end-column="2" />
           <folding />
         </state>
